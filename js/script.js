@@ -33,3 +33,11 @@ getRepos();
 
 getProfileData(); //calling function - if you don't call it nothing will happen. That's why you call outside function. Making it isn't enough.
 
+
+const getRepoData = async function () {//this is Step 3 of 7 "Fetch Repo Data"
+  
+}
+
+const displayRepoNames = async function () {
+  
+}
