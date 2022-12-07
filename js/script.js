@@ -1,6 +1,8 @@
 const profileOverview = document.querySelector(".overview"); //profile overview
 const username = "mauramcgurk"; //need quotes!!!
 const repoList = document.querySelector(".repo-list");
+const repoBlock = document.querySelector(".repos");
+const individualRepoData = document.querySelector(".repo-data");
 
 const getProfileData = async function () {
     const request = await fetch (`https://api.github.com/users/${username}`);
@@ -21,23 +23,34 @@ const displayProfile = function (profileData) { //keep it outside so it's availa
     <p><strong>Number of public repos:</strong> ${profileData.public_repos}</p>
   </div>` //thi is all in a string bc need to embed within $ later and string is easiest way
     profileOverview.appendChild(userInfo); //adding as a child. InnerHTML is kind of doing the same thing.
-}
+
+    getRepos();
+  }
 
 const getRepos = async function () {
     const request = await fetch (`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`)
     const repos = await request.json();
     console.log(repos);
+    displayRepoNames(repos);
 }
 
 getRepos();
 
 getProfileData(); //calling function - if you don't call it nothing will happen. That's why you call outside function. Making it isn't enough.
 
-
-const getRepoData = async function () {//this is Step 3 of 7 "Fetch Repo Data"
-  
+const displayRepoNames = async function (repos) {
+  for (let repo of repos) {
+    const li = document.createElement("li");//must be in loop because creating 18 times. If outside, doesn't work
+    li.classList.add("repo");
+    li.innerHTML = `
+      <h3>${repo.name}</h3>`;
+    repoList.appendChild(li); 
+  }
 }
 
-const displayRepoNames = async function () {
-  
-}
+repoList.addEventListener("click", function (e) {//we basically turned this into a button (the whole section)
+  if (e.target.matches("h3")) {//doing the check
+    let repoName = e.target.innerText //we know it's the h3 that we targeted earlier
+  }
+
+})
