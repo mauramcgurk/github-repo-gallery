@@ -51,6 +51,6 @@ const displayRepoNames = async function (repos) {
 repoList.addEventListener("click", function (e) {//we basically turned this into a button (the whole section)
   if (e.target.matches("h3")) {//doing the check
     let repoName = e.target.innerText //we know it's the h3 that we targeted earlier
+  console.log(repoName);
   }
-
 })
