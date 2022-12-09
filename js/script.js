@@ -54,3 +54,14 @@ repoList.addEventListener("click", function (e) {//we basically turned this into
   console.log(repoName);
   }
 })
+
+const getRepoData = async function (repoName) {
+
+}
+
+
+const displayRepoData = async function (repoInfo, languages) {
+  
+}
+
+displayRepoData ();
