@@ -9,7 +9,7 @@ const getProfileData = async function () {
     const profileData = await request.json();
     console.log(profileData);
     displayProfile(profileData); //
-}
+};
 
 const displayProfile = function (profileData) { //keep it outside so it's available for all. Don't pass request as paramaeter bc it has too much extra info. Json data is what we need. 
     const userInfo = document.createElement("user-info");
@@ -25,14 +25,14 @@ const displayProfile = function (profileData) { //keep it outside so it's availa
     profileOverview.appendChild(userInfo); //adding as a child. InnerHTML is kind of doing the same thing.
 
     getRepos();
-  }
+  };
 
 const getRepos = async function () {
-    const request = await fetch (`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`)
+    const request = await fetch (`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
     const repos = await request.json();
     console.log(repos);
     displayRepoNames(repos);
-}
+};
 
 getRepos();
 
@@ -46,22 +46,31 @@ const displayRepoNames = async function (repos) {
       <h3>${repo.name}</h3>`;
     repoList.appendChild(li); 
   }
-}
+};
 
 repoList.addEventListener("click", function (e) {//we basically turned this into a button (the whole section)
   if (e.target.matches("h3")) {//doing the check
     let repoName = e.target.innerText //we know it's the h3 that we targeted earlier
-  console.log(repoName);
+  getRepoData (repoName);
   }
-})
+});
 
 const getRepoData = async function (repoName) {
-
-}
+  const request = await fetch (`https://api.github.com/repos/${username}/${repoName}`);//I get a 404 error in console?
+  const repoInfo = await request.json();
+  console.log(repoInfo);
+  //displayProfile(profileData); //I erased this by accident and my profile pic disappeared! Then I added back and it was "Undefined"?
+  const fetchLanguages = await fetch (repoInfo.languages_url); // ask Arnav / I'm not sure what needs to happen here to use language property?
+  const languageData = await fetchLanguages.json();
+  console.log(languageData);
+};
 
 
 const displayRepoData = async function (repoInfo, languages) {
   
-}
+};
 
 displayRepoData ();
+
+//my repos are displaying twice, for some reason? 12/10/22
+
