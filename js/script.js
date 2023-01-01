@@ -3,6 +3,8 @@ const username = "mauramcgurk"; //need quotes!!!
 const repoList = document.querySelector(".repo-list");
 const repoBlock = document.querySelector(".repos");
 const individualRepoData = document.querySelector(".repo-data");
+const viewReposButton = document.querySelector(".view-repos"); //it's ".view-repos" not ".view-repos hide"
+const filterInput = document.querySelector(".filter-repos");
 
 const getProfileData = async function () {
     const request = await fetch (`https://api.github.com/users/${username}`);
@@ -76,7 +78,8 @@ const getRepoData = async function (repoName) {
 const displayRepoData = async function (repoInfo, languages) {
   individualRepoData.innerHTML = "";
   individualRepoData.classList.remove ("hide");
-  repoBlock.classList.add ("hide"); //Is something going wrong here - after clicking on one, I can only see that one; the other 17 disappear unless I refresh page
+  repoBlock.classList.add ("hide"); 
+  viewReposButton.classList.remove ("hide");
  
   const div = document.createElement("div"); 
   
@@ -92,3 +95,9 @@ const displayRepoData = async function (repoInfo, languages) {
 
 //displayRepoData ();
 
+viewReposButton.addEventListener("click", function (e) {
+  repoBlock.classList.remove ("hide"); //displays block of all repos
+  individualRepoData.classList.add ("hide");
+  viewReposButton.classList.add ("hide");
+  }
+);
