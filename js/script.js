@@ -10,7 +10,7 @@ const getProfileData = async function () {
     const request = await fetch (`https://api.github.com/users/${username}`);
     const profileData = await request.json();
     //console.log(profileData);
-    displayProfile(profileData); //
+    displayProfile(profileData); 
 };
 
 const displayProfile = function (profileData) { //keep it outside so it's available for all. Don't pass request as paramaeter bc it has too much extra info. Json data is what we need. 
@@ -41,6 +41,7 @@ const getRepos = async function () {
 getProfileData(); //calling function - if you don't call it nothing will happen. That's why you call outside function. Making it isn't enough.
 
 const displayRepoNames = async function (repos) {
+  filterInput.classList.remove ("hide");
   for (let repo of repos) {
     const li = document.createElement("li");//must be in loop because creating 18 times. If outside, doesn't work
     li.classList.add("repo");
@@ -62,9 +63,11 @@ const getRepoData = async function (repoName) {
   const repoInfo = await request.json();
   console.log(repoInfo);
   //displayProfile(profileData); //I erased this by accident and my profile pic disappeared! Then I added back and it was "Undefined"?
+  
   const fetchLanguages = await fetch (repoInfo.languages_url); // ask Arnav / I'm not sure what needs to happen here to use language property?
   const languageData = await fetchLanguages.json();
-  //console.log(languageData);
+  console.log(languageData);
+  
   const languages = []; //empty array is for adding to
   for (const language in languages) { //Am I confusing var names here?
     console.log(language);
@@ -89,7 +92,7 @@ const displayRepoData = async function (repoInfo, languages) {
   <p>Default Branch: ${repoInfo.default_branch}</p>
   <p>Languages: ${languages.join(", ")}</p>
   <a class="visit" href="${repoInfo.html_url}" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>`
-
+  //Languages not displaying in console or on page. Changed "${languages" et al to "language" to see if it works. No - that's not the problem.
   individualRepoData.append(div);
 };
 
