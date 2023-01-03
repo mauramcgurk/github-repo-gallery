@@ -14,8 +14,9 @@ const getProfileData = async function () {
 };
 
 const displayProfile = function (profileData) { //keep it outside so it's available for all. Don't pass request as paramaeter bc it has too much extra info. Json data is what we need. 
-    const userInfo = document.createElement("user-info");
-    userInfo.innerHTML = `
+    const container = document.createElement("container");
+    container.classList.add("user-info");
+    container.innerHTML = `
       <figure>
         <img alt="user avatar" src=${profileData.avatar_url} /> 
       </figure>
@@ -26,7 +27,7 @@ const displayProfile = function (profileData) { //keep it outside so it's availa
         <p><strong>Number of public repos:</strong> ${profileData.public_repos}</p>
       </div>` //this is all in a string bc need to embed within $ later and string is easiest way
     
-   profileOverview.appendChild(userInfo); //adding as a child. InnerHTML is kind of doing the same thing.
+   profileOverview.appendChild(container); //adding as a child. InnerHTML is kind of doing the same thing.
 
     getRepos();
   };
