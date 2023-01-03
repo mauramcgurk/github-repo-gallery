@@ -63,16 +63,14 @@ const getRepoData = async function (repoName) {
   const request = await fetch (`https://api.github.com/repos/${username}/${repoName}`);//I get a 404 error in console?
   const repoInfo = await request.json();
   console.log(repoInfo);
-  //displayProfile(profileData); //I erased this by accident and my profile pic disappeared! Then I added back and it was "Undefined"?
   
-  const fetchLanguages = await fetch (repoInfo.languages_url); // ask Arnav / I'm not sure what needs to happen here to use language property?
+  const fetchLanguages = await fetch (repoInfo.languages_url);
   const languageData = await fetchLanguages.json();
-  console.log(languageData);
   
   const languages = []; //empty array is for adding to
-  for (const language in languages) { //Am I confusing var names here?
-    console.log(language);
+  for (const language in languageData) { //Need to loop through languageData because that's where stored info is!
     languages.push(language);
+    console.log(languageData);
   }
 
   displayRepoData(repoInfo, languages);
@@ -95,6 +93,7 @@ const displayRepoData = async function (repoInfo, languages) {
   <a class="visit" href="${repoInfo.html_url}" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>`
   //Languages not displaying in console or on page. Changed "${languages" et al to "language" to see if it works. No - that's not the problem.
   individualRepoData.append(div);
+  console.log(languages);
 };
 
 //displayRepoData ();
