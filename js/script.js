@@ -104,3 +104,24 @@ viewReposButton.addEventListener("click", function (e) {
   viewReposButton.classList.add ("hide");
   }
 );
+
+filterInput.addEventListener("input", function (e) {
+ const searchTextInput = e.target.value;
+ console.log(searchTextInput);
+
+ const repos = document.querySelectorAll(".repo");
+ const inputSearch = searchTextInput.toLowerCase();
+
+ //create loop of each repo inside repos:
+ for (const repo of repos) { 
+  const lowerCaseRepoName = repo.innerText.toLowerCase();
+  //if repo lowercase text includes lowercase search text, show repo 
+  if (lowerCaseRepoName.includes(inputSearch)) {
+    repo.classList.remove ("hide");
+  } 
+  //if repo l)owercase text does not include lowercase search text, hide repo 
+else {
+  repo.classList.add ("hide");
+  } 
+  }
+});
