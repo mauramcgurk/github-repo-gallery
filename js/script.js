@@ -1,19 +1,18 @@
 const profileOverview = document.querySelector(".overview"); //profile overview
-const username = "mauramcgurk"; //need quotes!!!
+const username = "mauramcgurk"; 
 const repoList = document.querySelector(".repo-list");
 const repoBlock = document.querySelector(".repos");
 const individualRepoData = document.querySelector(".repo-data");
-const viewReposButton = document.querySelector(".view-repos"); //it's ".view-repos" not ".view-repos hide"
+const viewReposButton = document.querySelector(".view-repos"); 
 const filterInput = document.querySelector(".filter-repos");
 
 const getProfileData = async function () {
     const request = await fetch (`https://api.github.com/users/${username}`);
     const profileData = await request.json();
-    //console.log(profileData);
     displayProfile(profileData); 
 };
 
-const displayProfile = function (profileData) { //keep it outside so it's available for all. Don't pass request as paramaeter bc it has too much extra info. Json data is what we need. 
+const displayProfile = function (profileData) { 
     const container = document.createElement("container");
     container.classList.add("user-info");
     container.innerHTML = `
@@ -25,9 +24,9 @@ const displayProfile = function (profileData) { //keep it outside so it's availa
         <p><strong>Bio:</strong> ${profileData.bio}</p>
         <p><strong>Location:</strong> ${profileData.location}</p>
         <p><strong>Number of public repos:</strong> ${profileData.public_repos}</p>
-      </div>` //this is all in a string bc need to embed within $ later and string is easiest way
+      </div>` 
     
-   profileOverview.appendChild(container); //adding as a child. InnerHTML is kind of doing the same thing.
+   profileOverview.appendChild(container); 
 
     getRepos();
   };
@@ -35,16 +34,15 @@ const displayProfile = function (profileData) { //keep it outside so it's availa
 const getRepos = async function () {
     const request = await fetch (`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
     const repos = await request.json();
-    console.log(repos);
     displayRepoNames(repos);
 };
 
-getProfileData(); //calling function - if you don't call it nothing will happen. That's why you call outside function. Making it isn't enough.
+getProfileData(); 
 
 const displayRepoNames = async function (repos) {
   filterInput.classList.remove ("hide");
   for (let repo of repos) {
-    const li = document.createElement("li");//must be in loop because creating 18 times. If outside, doesn't work
+    const li = document.createElement("li");
     li.classList.add("repo");
     li.innerHTML = `
       <h3>${repo.name}</h3>`;
@@ -52,25 +50,21 @@ const displayRepoNames = async function (repos) {
   }
 };
 
-repoList.addEventListener("click", function (e) {//we basically turned this into a button (the whole section)
-  if (e.target.matches("h3")) {//doing the check
-    let repoName = e.target.innerText //we know it's the h3 that we targeted earlier
+repoList.addEventListener("click", function (e) {
+  if (e.target.matches("h3")) {
+    let repoName = e.target.innerText 
   getRepoData (repoName);
   }
 });
 
 const getRepoData = async function (repoName) {
-  const request = await fetch (`https://api.github.com/repos/${username}/${repoName}`);//I get a 404 error in console?
+  const request = await fetch (`https://api.github.com/repos/${username}/${repoName}`);
   const repoInfo = await request.json();
-  console.log(repoInfo);
-  
   const fetchLanguages = await fetch (repoInfo.languages_url);
   const languageData = await fetchLanguages.json();
-  
-  const languages = []; //empty array is for adding to
-  for (const language in languageData) { //Need to loop through languageData because that's where stored info is!
+  const languages = []; 
+  for (const language in languageData) { 
     languages.push(language);
-    console.log(languageData);
   }
 
   displayRepoData(repoInfo, languages);
@@ -91,15 +85,11 @@ const displayRepoData = async function (repoInfo, languages) {
   <p>Default Branch: ${repoInfo.default_branch}</p>
   <p>Languages: ${languages.join(", ")}</p>
   <a class="visit" href="${repoInfo.html_url}" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>`
-  //Languages not displaying in console or on page. Changed "${languages" et al to "language" to see if it works. No - that's not the problem.
   individualRepoData.append(div);
-  console.log(languages);
 };
 
-//displayRepoData ();
-
 viewReposButton.addEventListener("click", function (e) {
-  repoBlock.classList.remove ("hide"); //displays block of all repos
+  repoBlock.classList.remove ("hide"); 
   individualRepoData.classList.add ("hide");
   viewReposButton.classList.add ("hide");
   }
@@ -107,19 +97,15 @@ viewReposButton.addEventListener("click", function (e) {
 
 filterInput.addEventListener("input", function (e) {
  const searchTextInput = e.target.value;
- console.log(searchTextInput);
 
  const repos = document.querySelectorAll(".repo");
  const inputSearch = searchTextInput.toLowerCase();
 
- //create loop of each repo inside repos:
  for (const repo of repos) { 
   const lowerCaseRepoName = repo.innerText.toLowerCase();
-  //if repo lowercase text includes lowercase search text, show repo 
   if (lowerCaseRepoName.includes(inputSearch)) {
     repo.classList.remove ("hide");
   } 
-  //if repo l)owercase text does not include lowercase search text, hide repo 
 else {
   repo.classList.add ("hide");
   } 
